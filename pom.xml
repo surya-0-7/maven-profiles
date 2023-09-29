@@ -5,72 +5,58 @@
 	<groupId>com.mt</groupId>
 	<artifactId>maven-profiles</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<name>Maven Web Application</name>
+	<url>http://winnertechnologies.com</url>
 	
-	<name>maven-profiles</name>
-
-	<description>maven-profiles Project for Java Project</description>
-
+	<description>Maven Web Profiles Project</description>
 	<organization>
-		<name>Vasu Technologies</name>
-		<url>http://vasutechnologies.com/</url>
+		<name>Winner Technologies</name>
+		<url>http://winnertechnologies.com/</url>
 	</organization>
-
 	<properties>
-		<jdk.version>1.8</jdk.version>
-		<spring.version>5.1.2.RELEASE</spring.version>
-		<junit.version>4.11</junit.version>
+		<!-- versions -->
+		<env>dev</env>
+		<spring.version>5.0.7.RELEASE</spring.version>
+		<junit.version>4.12</junit.version>
 		<log4j.version>1.2.17</log4j.version>
-		<sonar.host.url>http://3.111.144.22:9000/</sonar.host.url>
+		<sonar.host.url>http://172.31.35.58:9000/</sonar.host.url>
 		<sonar.login>admin</sonar.login>
-		<sonar.password>Surya@12345</sonar.password> 
+		<sonar.password>Surya@12345</sonar.password>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
 	</properties>
-
 	<dependencies>
-		
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20160212</version>
-		</dependency>
-		
 		<!-- test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>${junit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.2.3.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- compile dependencies -->
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-    		<groupId>org.springframework</groupId>
-    		<artifactId>spring-web</artifactId>
-    		<version>${spring.version}</version>
-  		</dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -81,72 +67,72 @@
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
 		<!-- provided dependencies -->
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
 	</dependencies>
-	
-	<distributionManagement>
-	
-	    <repository>
-	      <id>nexus</id>
-	      <name>Release</name>
-	      <url>http://13.235.134.1:8081/repository/sunny-release/</url>
-	    </repository>
-	    <snapshotRepository>
-      	      <id>nexus</id>
-      	      <name>Snapshot</name>
-      	      <url>http://13.235.134.1:8081/repository/sunny-snapshot/</url>
-    	    </snapshotRepository>
-	</distributionManagement>
-	
+        <distributionManagement>
+            <snapshotRepository>
+               <id>nexus</id>
+               <name>snapshot</name>
+               <url>http://13.235.134.1:8081/repository/sunny-snapshot/</url>
+         </snapshotRepository>
+            <repository>
+               <id>nexus</id>
+               <name>release</name>
+               <url>http://13.235.134.1:8081/repository/sunny-release/</url>
+            </repository>
+       </distributionManagement>	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>stagging</id>
+			<properties>
+				<env>stagging</env>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<env>production</env>
+			</properties>
+		</profile>
+	</profiles>
 	<build>
 		<finalName>maven-profiles</finalName>
-		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
+				<version>2.5.1</version>
+				<inherited>true</inherited>
+				<configuration>cle
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.11.v20150529</version>
-				<configuration>
-					<scanIntervalSeconds>10</scanIntervalSeconds>
-					<webApp>
-						<contextPath>/maven-profiles</contextPath>
-					</webApp>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>false</downloadJavadocs>
-					<wtpversion>2.0</wtpversion>
-					<wtpContextName>maven-profiles</wtpContextName>
-				</configuration>
-			</plugin>
-			
 		</plugins>
+		<filters>
+			<filter>src/main/resources/${env}/application.properties</filter>
+		</filters>
+		<resources>
+			<resource>
+				<directory>src/main/resources/${env}</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
-	
 	
 </project>
